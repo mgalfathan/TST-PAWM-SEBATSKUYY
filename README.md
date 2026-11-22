@@ -7,8 +7,7 @@ ParkirIn adalah layanan parkir pintar kota (topik Smart City). Repositori ini be
 | Item | Nilai |
 | --- | --- |
 | Kelompok | Sebatskuy |
-| Anggota | Muhammad Ghiffary Alfathan (18224084) 
-Muhammad Arkan Dhaifullah (18224116) |
+| Anggota | Muhammad Ghiffary Alfathan (18224084) & Muhammad Arkan Dhaifullah (18224116) |
 | URL publik | `https://sebatskuy.site` |
 | Base URL API | `https://sebatskuy.site/api` |
 | Repositori | [github.com/mgalfathan/TST-PAWM-SEBATSKUYY](https://github.com/mgalfathan/TST-PAWM-SEBATSKUYY) |
