@@ -18,19 +18,24 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get('/', (_req, res) => {
+app.get(['/', '/api'], (_req, res) => {
   res.json({
     service: 'ParkirIn core-service',
     version: '1.0.0',
-    docs: 'Lihat README.pdf di repositori',
+    status: 'online',
+    docs: 'https://github.com/mgalfathan/TST-PAWM-SEBATSKUYY',
+    auth: 'POST /api/auth/login, lalu kirim header Authorization: Bearer <token>',
+    demoAccount: { email: 'driver@parkirin.id', password: 'parkirin123' },
     endpoints: {
       health: 'GET /api/health',
-      auth: '/api/auth/*',
-      zones: '/api/zones',
-      reservations: '/api/reservations',
-      sessions: '/api/sessions',
-      enforcement: '/api/enforcement/*',
-      public: 'GET /api/public/availability',
+      publicAvailability: 'GET /api/public/availability (tanpa login)',
+      login: 'POST /api/auth/login',
+      register: 'POST /api/auth/register',
+      zones: 'GET /api/zones',
+      zoneDetail: 'GET /api/zones/:zoneId',
+      reservations: 'POST /api/reservations, GET /api/reservations/me',
+      sessions: 'POST /api/sessions, POST /api/sessions/:id/end, POST /api/sessions/:id/pay',
+      enforcement: 'GET /api/enforcement/violations (officer/admin)',
     },
   });
 });

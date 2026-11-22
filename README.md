@@ -8,8 +8,8 @@ ParkirIn adalah layanan parkir pintar kota (topik Smart City). Repositori ini be
 | --- | --- |
 | Kelompok | Sebatskuy |
 | Anggota | Muhammad Ghiffary Alfathan (18224084), Muhammad Arkan Dhaifullah (18224116) |
-| URL publik | `https://sebatskuy.stei.site` (K02). Selama tunnel kelas belum aktif: URL quick tunnel `https://<acak>.trycloudflare.com` |
-| Base URL API | `https://sebatskuy.stei.site/api` |
+| URL publik | `https://sebatskuy.site` |
+| Base URL API | `https://sebatskuy.site/api` |
 | Repositori | [github.com/mgalfathan/TST-PAWM-SEBATSKUYY](https://github.com/mgalfathan/TST-PAWM-SEBATSKUYY) |
 
 ## 1. Arsitektur
@@ -18,7 +18,7 @@ ParkirIn adalah layanan parkir pintar kota (topik Smart City). Repositori ini be
  Aplikasi mobile (Expo)          Kelompok lain
           |                            |
           v                            v
- https://sebatskuy.stei.site   (HTTPS, Cloudflare)
+ https://sebatskuy.site   (HTTPS, Cloudflare)
           |
    Cloudflare Tunnel  (container: tunnel, tanpa membuka port router)
           |
@@ -81,7 +81,7 @@ Endpoint `/api/public/*` terbuka tanpa login. Formatnya versi `v1` dan dijaga st
 
 ## 3. Daftar endpoint
 
-Semua endpoint diawali base URL `https://sebatskuy.stei.site`.
+Semua endpoint diawali base URL `https://sebatskuy.site`.
 
 | Method | Endpoint | Auth | Keterangan |
 | --- | --- | --- | --- |
@@ -130,7 +130,7 @@ Format error selalu sama:
 Set variabel dulu:
 
 ```bash
-BASE=https://sebatskuy.stei.site/api
+BASE=https://sebatskuy.site/api
 ```
 
 Login:
@@ -202,8 +202,8 @@ Pilih salah satu cara membuka akses publik:
 
 | Profile | Kapan dipakai | URL |
 | --- | --- | --- |
-| `quick` | Sementara, belum punya akses tunnel kelas | `https://<acak>.trycloudflare.com`, berubah setiap restart |
-| `token` | Tunnel kelas K02, atau tunnel di akun Cloudflare sendiri | `https://sebatskuy.stei.site` (atau domain sendiri) |
+| `quick` | Cadangan kalau belum punya domain | `https://<acak>.trycloudflare.com`, berubah setiap restart |
+| `token` | Tunnel di akun Cloudflare dengan domain (yang dipakai sekarang) | `https://sebatskuy.site` |
 
 **Opsi A: quick tunnel (tanpa akun, tanpa token)**
 
@@ -215,12 +215,12 @@ curl https://<acak>.trycloudflare.com/api/health
 
 **Opsi B: tunnel dengan token**
 
-Isi `TUNNEL_TOKEN` di `.env`, lalu di dashboard Cloudflare Zero Trust arahkan public hostname `sebatskuy.stei.site` ke service `http://gateway:80`.
+Isi `TUNNEL_TOKEN` di `.env`. Di dashboard Cloudflare Zero Trust, buka tunnel, Add route > Published application, hostname `sebatskuy.site`, Service URL `http://gateway:80`.
 
 ```bash
 docker compose --profile quick down      # kalau sebelumnya pakai quick tunnel
 docker compose --profile token up -d --build
-curl https://sebatskuy.stei.site/api/health
+curl https://sebatskuy.site/api/health
 ```
 
 Port router tidak perlu dibuka di kedua opsi. Port `8080` di STB hanya untuk tes lokal (`curl http://localhost:8080/api/health`).
