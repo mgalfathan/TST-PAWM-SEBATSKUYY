@@ -1,0 +1,8 @@
+.env
+node_modules/
+core-service/data/
+mobile/.expo/
+mobile/node_modules/
+*.log
+.DS_Store
+mobile/.env

@@ -1,0 +1,57 @@
+services:
+  core-service:
+    build: ./core-service
+    container_name: parkirin-core
+    restart: unless-stopped
+    env_file: .env            # rahasia, jangan di-commit
+    volumes:
+      - parkirin-data:/data
+    mem_limit: 256m           # jaga STB tidak hang
+    cpus: 0.5
+    expose:
+      - "3000"
+
+  gateway:
+    image: nginx:1.28-alpine
+    container_name: parkirin-gateway
+    restart: unless-stopped
+    depends_on:
+      - core-service
+    volumes:
+      - ./gateway/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    ports:
+      - "8080:80"             # hanya untuk tes lokal, publik lewat tunnel
+    mem_limit: 64m
+    cpus: 0.25
+
+  # Opsi A: tunnel dengan token (tunnel kelas dari asisten, atau tunnel akun Cloudflare sendiri)
+  #   docker compose --profile token up -d
+  tunnel:
+    image: cloudflare/cloudflared:latest
+    container_name: parkirin-tunnel
+    profiles: ["token"]
+    restart: unless-stopped
+    depends_on:
+      - gateway
+    command: tunnel --no-autoupdate run --token ${TUNNEL_TOKEN}
+    env_file: .env
+    mem_limit: 64m
+    cpus: 0.25
+
+  # Opsi B: quick tunnel sementara, tanpa akun dan tanpa token.
+  # URL acak *.trycloudflare.com, berubah setiap container di-restart.
+  #   docker compose --profile quick up -d
+  #   docker compose logs tunnel-quick | grep trycloudflare.com
+  tunnel-quick:
+    image: cloudflare/cloudflared:latest
+    container_name: parkirin-tunnel-quick
+    profiles: ["quick"]
+    restart: unless-stopped
+    depends_on:
+      - gateway
+    command: tunnel --no-autoupdate --url http://gateway:80
+    mem_limit: 64m
+    cpus: 0.25
+
+volumes:
+  parkirin-data:
